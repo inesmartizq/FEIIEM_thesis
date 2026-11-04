@@ -1,0 +1,7 @@
+zone,system,chosen,BIC order,HQ order,literature,weekly lags
+DK1,x_da_id_spread,lags 1-25,lags 1-2,lags 1-3,"lags 1-24, 48","lags 1-25, 167-169, 335-337"
+DK1,x_id_bal_spread,lags 1-25,lags 1-2,lags 1-3,"lags 1-24, 48","lags 1-25, 167-169, 335-337"
+DK1,x_da_bal_spread,lags 1-25,lags 1-2,lags 1-3,"lags 1-24, 48","lags 1-25, 167-169, 335-337"
+DK2,x_da_id_spread,lags 1-25,lags 1-2,lags 1-2,"lags 1-24, 48","lags 1-25, 167-169, 335-337"
+DK2,x_id_bal_spread,lags 1-25,lags 1-2,lags 1-2,"lags 1-24, 48","lags 1-25, 167-169, 335-337"
+DK2,x_da_bal_spread,lags 1-25,lags 1-2,lags 1-2,"lags 1-24, 48","lags 1-25, 167-169, 335-337"

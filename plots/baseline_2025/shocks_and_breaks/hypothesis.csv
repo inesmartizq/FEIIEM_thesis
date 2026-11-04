@@ -1,0 +1,7 @@
+error,spread,expected,over_forecast
+c_wind_total_err,x_da_id_spread,-1,"less wind than planned -> system short -> up-regulation, higher balancing price"
+c_wind_total_err,x_id_bal_spread,-1,"less wind than planned -> system short -> up-regulation, higher balancing price"
+c_wind_total_err,x_da_bal_spread,-1,"less wind than planned -> system short -> up-regulation, higher balancing price"
+c_load_err,x_da_id_spread,1,"less demand than planned -> system long -> down-regulation, lower balancing price"
+c_load_err,x_id_bal_spread,1,"less demand than planned -> system long -> down-regulation, lower balancing price"
+c_load_err,x_da_bal_spread,1,"less demand than planned -> system long -> down-regulation, lower balancing price"

@@ -1,4 +1,0 @@
-Columns whose strongest |correlation| with any other column, in either
-direction, at any of lags [0, 1, 4, 24, 168], is below 0.1.
-This is informational only -- nothing was dropped from the dataframe.
-

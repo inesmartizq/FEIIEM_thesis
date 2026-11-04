@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thesis dashboard</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-title" id="site-title">Thesis dashboard</span>
+      <span class="brand-sub" id="site-sub"></span>
+    </div>
+    <nav class="tabs" aria-label="Sections">
+      <a class="part" href="#hypothesis" data-section="hypothesis"><span class="part-num">1</span>Hypothesis</a>
+      <div class="part-group">
+        <a class="part" href="#pipeline" data-part="model"><span class="part-num">2</span>VARX model</a>
+        <a href="#pipeline" data-section="pipeline">Overall pipeline</a>
+        <a href="#data" data-section="data">Data overview</a>
+        <a href="#tests" data-section="tests">VARX tests</a>
+        <a href="#results" data-section="results">VARX results</a>
+      </div>
+      <a class="part" href="#questions" data-section="questions"><span class="part-num">3</span>Next steps</a>
+    </nav>
+    <div class="flag-legend" id="flag-legend" aria-label="Circles on the page" hidden></div>
+  </div>
+</header>
+
+<main>
+  <!-- PART 1: HYPOTHESIS -->
+  <section id="hypothesis" class="section" aria-labelledby="hypothesis-h" hidden>
+    <div class="intro">
+      <div class="part-label">Part 1</div>
+      <h1 id="hypothesis-h">Hypothesis</h1>
+      <p>Day-ahead trading in DK1 and DK2 is based on forecasts of wind and demand, which are never exact. The
+        hypothesis is that these forecast errors move the price spreads between the day-ahead, intraday and balancing
+        markets. Step 1 describes the forecast errors; step 2 relates them to the spreads.</p>
+    </div>
+    <ol class="hyp-steps">
+      <li class="hyp-step current"><span class="step-tag">Step 1</span><b>Forecast errors</b>
+        <span>Size, sign and persistence</span></li>
+      <li class="hyp-step current"><span class="step-tag">Step 2</span><b>Forecast errors and price spreads</b>
+        <span>Relation to the spreads</span></li>
+    </ol>
+
+    <article class="block" id="hypothesis-capacity">
+      <h2>Capacity calculation</h2>
+      <div class="prose">
+        <p>Since 29 October 2024 the Nordic day-ahead market uses flow-based market coupling. The capacity calculation
+          sets how much can be traded between bidding zones, and it rests on the TSOs' own forecasts.</p>
+      </div>
+      <figure class="fb-diagram">
+        <svg viewBox="0 0 1280 252" role="img" aria-labelledby="fb-diagram-title">
+          <title id="fb-diagram-title">The TSO forecasts set the flow-based domain, which sets the capacity of the day-ahead
+            auction; the capacity left goes to intraday and then to balancing, whose price settles the imbalances;
+            market participants bid with their own forecasts</title>
+          <defs>
+            <marker id="fb-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z"></path></marker>
+          </defs>
+          <g class="fb-box used"><rect x="20" y="24" width="196" height="64" rx="10"></rect>
+            <text x="118" y="52">TSO forecasts</text><text class="sub" x="118" y="72">load and wind · used here</text></g>
+          <g class="fb-box"><rect x="280" y="24" width="196" height="64" rx="10"></rect>
+            <text x="378" y="52">Grid models (IGMs)</text><text class="sub" x="378" y="72">each TSO · D-2, updated D-1</text></g>
+          <g class="fb-box key"><rect x="540" y="24" width="196" height="64" rx="10"></rect>
+            <text x="638" y="52">Flow-based domain</text><text class="sub" x="638" y="72">Nordic RCC · CGM, PTDF, RAM</text></g>
+          <g class="fb-box unused"><rect x="280" y="164" width="196" height="64" rx="10"></rect>
+            <text x="378" y="192">Participant forecasts</text><text class="sub" x="378" y="212">not used here</text></g>
+          <g class="fb-box"><rect x="540" y="164" width="196" height="64" rx="10"></rect>
+            <text x="638" y="192">Day-ahead auction</text><text class="sub" x="638" y="212">SDAC · D-1, 12:00</text></g>
+          <g class="fb-box"><rect x="800" y="164" width="196" height="64" rx="10"></rect>
+            <text x="898" y="192">Intraday market</text><text class="sub" x="898" y="212">SIDC · continuous and IDAs</text></g>
+          <g class="fb-box"><rect x="1060" y="164" width="196" height="64" rx="10"></rect>
+            <text x="1158" y="192">Balancing market</text><text class="sub" x="1158" y="212">mFRR EAM · delivery</text></g>
+          <g class="fb-box"><rect x="1060" y="24" width="196" height="64" rx="10"></rect>
+            <text x="1158" y="52">Imbalance settlement</text><text class="sub" x="1158" y="72">eSett · after delivery</text></g>
+          <g class="fb-arrows">
+            <line x1="220" y1="56" x2="276" y2="56" marker-end="url(#fb-head)"></line>
+            <line x1="480" y1="56" x2="536" y2="56" marker-end="url(#fb-head)"></line>
+            <line x1="638" y1="92" x2="638" y2="160" marker-end="url(#fb-head)"></line>
+            <line x1="480" y1="196" x2="536" y2="196" marker-end="url(#fb-head)"></line>
+            <line x1="740" y1="196" x2="796" y2="196" marker-end="url(#fb-head)"></line>
+            <line x1="1000" y1="196" x2="1056" y2="196" marker-end="url(#fb-head)"></line>
+            <line x1="1158" y1="160" x2="1158" y2="92" marker-end="url(#fb-head)"></line>
+          </g>
+          <g class="fb-labels">
+            <text x="648" y="130" class="start">capacity</text>
+            <text x="508" y="186">bids</text>
+            <text x="768" y="186">ATCE</text>
+            <text x="1028" y="186">leftover</text>
+            <text x="1168" y="130" class="start">imbalance price</text>
+          </g>
+        </svg>
+      </figure>
+      <ol class="fb-steps">
+        <li class="fb-step"><span class="step-tag">D-2</span>
+          <div><b>Individual grid models (IGMs)</b>
+            <p>Each TSO models its grid for every hour of the delivery day: topology, planned outages and its forecasts
+              of load and generation, wind included. It also sends Nordic RCC its critical network elements and
+              contingencies (CNECs) and its combined dynamic constraints, sets of lines whose summed flow is limited
+              for stability, each with a maximum flow (Fmax).</p></div></li>
+        <li class="fb-step"><span class="step-tag">D-1, morning</span>
+          <div><b>Common grid model (CGM) and PTDFs</b>
+            <p>The TSOs update their models for new outages and forecast changes, which is common. Nordic RCC merges
+              them into the common grid model and computes the power transfer distribution factors (PTDFs): how much a
+              change in each zone's net position loads each element. HVDC links, and radial AC links to other
+              synchronous areas, enter through advanced hybrid coupling (AHC): each gets a virtual bidding zone at its
+              connection point with its own PTDFs, so its flow competes for grid capacity in the auction instead of
+              having capacity reserved for it.</p></div></li>
+        <li class="fb-step"><span class="step-tag">D-1, morning</span>
+          <div><b>Remaining available margins (RAMs)</b>
+            <p>The RAM is the part of each element's capacity given to the market. F<sub>0</sub> is the flow that would
+              be on the element without any cross-zonal exchange, from the flows inside the bidding zones; it is taken
+              from the grid model, linearised with the PTDFs, and is not available for trade. F<sub>AAC</sub> is the
+              flow of capacity already allocated, F<sub>RA</sub> what remedial actions free up, and the flow reliability
+              margin F<sub>RM</sub> is set from the spread of past differences between the flows expected in the
+              capacity calculation and the realised flows. The TSOs validate the result. PTDFs and RAMs together form
+              the flow-based domain.</p>
+            <figure class="math"><img data-math="ram" alt="remaining available margin"></figure></div></li>
+        <li class="fb-step"><span class="step-tag">D-1, 11:00–12:00</span>
+          <div><b>Day-ahead auction (SDAC)</b>
+            <p>The flow-based parameters are published by 11:00. At gate closure at 12:00, the Single Day-Ahead
+              Coupling clears prices and net positions inside the domain, with the Euphemia algorithm. It also respects
+              allocation constraints: ramping limits and loss factors on the HVDC links.</p></div></li>
+        <li class="fb-step"><span class="step-tag">After the auction</span>
+          <div><b>ATC extraction (ATCE) for intraday</b>
+            <p>The flow already allocated in day-ahead is subtracted from each CNEC's margin, and an optimisation turns
+              what is left of the domain into available transfer capacities (ATCs), border by border, as large as
+              possible on all borders. These go to the Single Intraday Coupling (SIDC), both continuous trading and
+              the intraday auctions (IDAs). Intraday capacities are not flow-based.</p></div></li>
+        <li class="fb-step"><span class="step-tag">Delivery</span>
+          <div><b>Balancing (mFRR EAM)</b>
+            <p>The cross-zonal capacity still free after intraday gate closure is left for the mFRR energy activation
+              market.</p></div></li>
+        <li class="fb-step"><span class="step-tag">After delivery</span>
+          <div><b>Imbalance settlement (eSett)</b>
+            <p>Each balance responsible party pays or receives the imbalance price for the difference between its
+              position and its metered production and consumption, per 15-minute period. Under the Nordic single price
+              and single position (since November 2021), the price is the mFRR price in the dominating direction, or
+              the day-ahead price without regulation, so an imbalance costs money when it adds to the system imbalance
+              and can earn money when it reduces it. eSett settles on behalf of the TSOs.</p></div></li>
+      </ol>
+      <p class="note">Sources: Nordic RCC, <a href="https://nordic-rcc.net/flow-based/">nordic-rcc.net/flow-based</a>,
+        and the supporting document of the Nordic capacity calculation methodology; eSett,
+        <a href="https://www.esett.com/">esett.com</a></p>
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="card-title">TSO forecasts (used here)</h3>
+          <ul class="read-list">
+            <li>Made by the TSOs and published on the ENTSO-E Transparency Platform: demand by 10:00 and wind at 18:00
+              on the day before delivery.</li>
+            <li>Closer to the inputs of the capacity calculation than to the forecasts market participants trade
+              on.</li>
+            <li>A miss is built into the capacities everyone trades on, so it reaches all market participants at the
+              same time. The miss is the TSOs'.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Market participants' forecasts (not used here)</h3>
+          <ul class="read-list">
+            <li>Each participant bids with its own forecasts, from its own models or from consultants.</li>
+            <li>Their misses differ between participants and show up in each one's own imbalance.</li>
+            <li>They are not observed in this thesis.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article class="block" id="hypothesis-errors">
+      <h2>Step 1 · Forecast errors</h2>
+      <div class="prose">
+        <p>The forecast error is the day-ahead forecast minus the actual value. A positive error is an over-forecast
+          (less wind or demand than forecast), a negative error an under-forecast.</p>
+      </div>
+      <figure class="math"><img data-math="error" alt="forecast error"></figure>
+      <div class="filters filters-inline zone-choice" id="error-filters" role="group" aria-label="Forecast error shown"></div>
+
+      <div class="card q-card">
+        <h3 class="q-title">Hourly forecast error</h3>
+        <div class="q-controls" id="over-time-controls"></div>
+        <div class="legend-row" id="over-time-legend"></div>
+        <div class="chart chart-time" id="over-time"></div>
+        <p class="q-source"></p>
+      </div>
+
+      <h3 class="sub-h">Comparison of DK1 and DK2</h3>
+      <div class="prose">
+        <p>The two zones differ in size, so the errors are also shown relative to the average hour: the yearly total of
+          the variable divided by the number of hours.</p>
+      </div>
+      <figure class="math"><img data-math="normalised" alt="normalised forecast error"></figure>
+      <div class="card q-card">
+        <h3 class="q-title">Forecast error relative to the average hour</h3>
+        <div class="q-controls" id="zones-time-controls"></div>
+        <div class="legend-row" id="zones-time-legend"></div>
+        <div class="chart chart-zones" id="zones-time"></div>
+        <p class="q-source" id="zones-time-source"></p>
+      </div>
+      <div class="q-controls" id="compare-units"></div>
+      <div class="grid-2" id="zone-compare"></div>
+
+      <h3 class="sub-h">Distribution and timing</h3>
+      <div class="filters filters-inline zone-choice" id="detail-filters" role="group" aria-label="Zone and forecast error shown"></div>
+      <div class="tiles" id="error-tiles"></div>
+      <div class="grid-2">
+        <div class="card q-card">
+          <h3 class="q-title">Distribution</h3>
+          <div class="chart chart-q" id="err-hist"></div>
+          <p class="q-source"></p>
+        </div>
+        <div class="card q-card">
+          <h3 class="q-title">Run lengths</h3>
+          <div class="chart chart-q" id="err-runs"></div>
+          <p class="q-source"></p>
+        </div>
+        <div class="card q-card">
+          <h3 class="q-title">By hour and month</h3>
+          <div class="q-controls" id="hour-month-controls"></div>
+          <div class="chart chart-q" id="err-hour-month"></div>
+          <p class="q-source"></p>
+        </div>
+        <div class="card q-card">
+          <h3 class="q-title">Large errors by month</h3>
+          <div class="chart chart-q" id="err-large"></div>
+          <p class="q-source"></p>
+        </div>
+      </div>
+      <div class="card"><h3 class="card-title">Data sources</h3><div id="error-sources"></div></div>
+    </article>
+
+    <article class="block" id="hypothesis-implications">
+      <h2>Step 2 · Forecast errors and price spreads</h2>
+      <div class="prose">
+        <p>The price spreads are the differences between the day-ahead (DA), intraday (ID) and balancing (BAL) prices in
+          the same hour. They are the same spreads as in the VARX model in part 2.</p>
+      </div>
+      <figure class="math"><img data-math="spreads" alt="the price spreads"></figure>
+      <div class="prose">
+        <p>Hours with a large error are split by sign, since over- and under-forecasts are expected to move the spreads
+          in opposite directions.</p>
+      </div>
+      <figure class="math"><img data-math="large_sign" alt="large errors by sign"></figure>
+      <p class="prose note">Q<sub>q</sub> is the q-quantile of the absolute error, here q = <span id="link-q"></span>, so
+        the largest <span id="link-top"></span> of the hours count as large errors.</p>
+      <div class="filters filters-inline zone-choice" id="link-filters" role="group" aria-label="Zone and forecast error shown"></div>
+      <div class="card q-card">
+        <h3 class="q-title">Hourly forecast error and spread</h3>
+        <div class="q-controls" id="link-controls"></div>
+        <div class="legend-row" id="link-legend"></div>
+        <div class="link-layout">
+          <div class="chart chart-zones" id="link-chart"></div>
+          <div class="link-side">
+            <h4 class="q-title">Mean spread</h4>
+            <div class="chart chart-bars" id="link-bars"></div>
+          </div>
+        </div>
+        <p class="q-source" id="link-source"></p>
+      </div>
+    </article>
+
+    <article class="block" id="hypothesis-lags">
+      <h2>Step 2 · Timing</h2>
+      <div class="prose">
+        <p>When the spread moves relative to a large error, and whether larger errors come with larger moves. The bands
+          are 95 % intervals from a block bootstrap with two-week blocks.</p>
+      </div>
+      <div class="filters filters-inline zone-choice" id="lag-filters" role="group" aria-label="Zone and forecast error shown"></div>
+      <div class="q-controls" id="lag-spread"></div>
+      <div class="card q-card">
+        <h3 class="q-title">Spread before and after a large error</h3>
+        <figure class="math"><img data-math="around" alt="average around the start of a run"></figure>
+        <div class="legend-row" id="around-legend"></div>
+        <div class="chart chart-q" id="around-chart"></div>
+      </div>
+      <div class="grid-2">
+        <div class="card q-card">
+          <h3 class="q-title">Lagged correlation</h3>
+          <figure class="math"><img data-math="lag_corr" alt="correlation by lag"></figure>
+          <div class="chart chart-q" id="corr-chart"></div>
+        </div>
+        <div class="card q-card">
+          <h3 class="q-title">Spread by error decile</h3>
+          <figure class="math"><img data-math="tenths" alt="tenths"></figure>
+          <div class="q-controls" id="tenths-controls"></div>
+          <div class="chart chart-q" id="tenths-chart"></div>
+        </div>
+      </div>
+      <p class="q-source" id="lag-source"></p>
+    </article>
+  </section>
+
+  <!-- PART 2: VARX MODEL -->
+  <!-- OVERALL PIPELINE -->
+  <section id="pipeline" class="section" aria-labelledby="pipeline-h" hidden>
+    <div class="intro">
+      <div class="part-label">Part 2 · VARX model</div>
+      <h1 id="pipeline-h">Overall pipeline</h1>
+      <p>Part 2 tests the hypothesis with a VARX model on hourly data for DK1 and DK2, in three stages: data, tests and
+        results.</p>
+    </div>
+    <div class="tiles" id="pipeline-tiles"></div>
+    <ol class="flow" id="pipeline-flow">
+      <li class="stage" data-link="#data">
+        <span class="stage-num">1</span>
+        <h2>Data</h2>
+        <p>Prices, forecasts, production, consumption, hydro and cross-border flows, merged into one hourly
+          table per zone.</p>
+        <ul class="steps">
+          <li><a href="#data">Dataframe</a></li>
+          <li><a href="#data">Column documentation</a></li>
+          <li><a href="#data">Time series and statistics</a></li>
+        </ul>
+      </li>
+      <li class="stage" data-link="#tests">
+        <span class="stage-num">2</span>
+        <h2>VARX tests</h2>
+        <p>Stationarity, lag order and residual checks.</p>
+        <ul class="steps">
+          <li><a href="#tests/stationarity">Stationarity (ADF, KPSS)</a></li>
+          <li><a href="#tests/robustness">Robustness of the stationarity tests</a></li>
+          <li><a href="#tests/lags">Lag selection (AIC)</a></li>
+          <li><a href="#tests/residuals">Residual checks</a></li>
+        </ul>
+        <div class="stage-facts" id="stage-tests-facts"></div>
+      </li>
+      <li class="stage" data-link="#results">
+        <span class="stage-num">3</span>
+        <h2>VARX results</h2>
+        <p>Granger causality and impulse responses for six models, one per zone and spread.</p>
+        <ul class="steps">
+          <li><a href="#results/expected">Expected signs</a></li>
+          <li><a href="#results/answer">Main results</a></li>
+          <li><a href="#results/irf">Responses over time</a></li>
+          <li><a href="#results/robustness">Robustness</a></li>
+        </ul>
+      </li>
+    </ol>
+
+    <article class="block" id="pipeline-varx">
+      <h2>The VARX model</h2>
+      <div class="prose">
+        <p>A vector autoregression (VAR) models several variables together. Each one has its own equation with its
+          own past and the past of the others, so a surprise in one variable can be followed through the others over
+          the next hours.</p>
+        <p>The X stands for exogenous variables. They enter every equation in the same hour only and have no equation
+          of their own. Here they are the wind ramp of the previous hour, the hydro situation, cross-border flows, and
+          hour and month dummies. They act as controls, since the research question is about the endogenous
+          variables. Only the endogenous variables have lags, so the model is a VARX(p, 0).</p>
+      </div>
+      <figure class="math"><img data-math="varx" alt="y_t = c + sum of A_i y_(t-i) + B x_t + D d_t + u_t"></figure>
+      <p class="prose note">y<sub>t</sub> endogenous variables · x<sub>t</sub> exogenous variables ·
+        d<sub>t</sub> hour and month dummies · u<sub>t</sub> residuals · A<sub>i</sub>, B, D coefficients,
+        estimated by OLS.</p>
+      <div class="prose">
+        <p>Each model has the wind error, the demand error and one spread (K = 3). The three spreads cannot go in the
+          same model, because DA-BAL = DA-ID + ID-BAL exactly. So each zone has three models.</p>
+      </div>
+      <div class="roles" id="varx-roles"></div>
+    </article>
+  </section>
+
+  <!-- DATA OVERVIEW -->
+  <section id="data" class="section" aria-labelledby="data-h" hidden>
+    <div class="intro">
+      <div class="part-label">Part 2 · VARX model</div>
+      <h1 id="data-h">Data overview</h1>
+      <p>All variables used in the models, hourly for each zone and grouped by theme, with their role (endogenous,
+        exogenous or input), source and definition.</p>
+    </div>
+    <div class="data-layout">
+      <aside class="tree-panel" aria-label="Variables">
+        <input class="search" id="tree-search" type="search" placeholder="Search variables" autocomplete="off">
+        <div id="tree"></div>
+      </aside>
+      <article class="variable" id="variable" aria-live="polite"></article>
+    </div>
+  </section>
+
+  <!-- VARX TESTS -->
+  <section id="tests" class="section" aria-labelledby="tests-h" hidden>
+    <div class="intro">
+      <div class="part-label">Part 2 · VARX model</div>
+      <h1 id="tests-h">VARX tests</h1>
+      <p>Before estimation, the series are tested for stationarity, the lag order is chosen and the residuals of the
+        chosen model are checked.</p>
+    </div>
+    <article class="block" id="tests-summary">
+      <h2>Summary</h2>
+      <nav class="grid-3" id="test-overview" aria-label="Tests"></nav>
+    </article>
+
+    <article class="block" id="tests-stationarity">
+      <h2>Stationarity</h2>
+      <div class="prose">
+        <p>A VARX needs series that move around a stable mean. A series with a unit root drifts away, and regressions
+          on it can show relationships that are not there. Two tests are combined. ADF has a unit root as its null
+          hypothesis, KPSS has stationarity. A series counts as stationary when ADF rejects and KPSS does not. When
+          both reject, the result is a conflict.</p>
+      </div>
+      <figure class="math"><figcaption>ADF (augmented Dickey–Fuller)</figcaption><img data-math="adf" alt="ADF regression"></figure>
+      <figure class="math"><figcaption>KPSS (Kwiatkowski–Phillips–Schmidt–Shin)</figcaption><img data-math="kpss" alt="KPSS statistic"></figure>
+      <div class="prose">
+        <p>The forecast errors give a conflict because their level moves over the year. The model already has hour and
+          month dummies, so the tests are repeated on what is left after a regression on the same dummies. The usual critical
+          values do not hold after this step, so they are simulated for each series.</p>
+      </div>
+      <figure class="math"><img data-math="dummies" alt="regression on hour and month dummies"></figure>
+      <div class="legend-row" id="stat-legend"></div>
+      <div class="grid-2">
+        <div class="card chart-card"><h3 class="card-title">As they are</h3><div class="chart chart-sq" id="stat-levels"></div></div>
+        <div class="card chart-card"><h3 class="card-title">After hour and month dummies</h3><div class="chart chart-sq" id="stat-after"></div></div>
+      </div>
+      <p class="note">Statistic ÷ 5 % critical value, log scale; above 1 the test rejects. After the dummies the
+        critical values are simulated.</p>
+      <div class="summary" id="stat-summary"></div>
+    </article>
+
+    <article class="block" id="tests-robustness">
+      <h2>Robustness of the stationarity tests</h2>
+      <div class="prose">
+        <p>The decisions above depend on two settings. One is the KPSS bandwidth ℓ, the number of autocovariances that
+          go into the long-run variance. A short bandwidth makes KPSS reject too often, a long one makes it weak. The
+          baseline lets the data pick ℓ (<span id="robust-auto"></span>). The other is the significance level α.</p>
+        <p>The checks repeat the tests with KPSS bandwidths of <span id="robust-bws"></span> hours and at
+          α = <span id="robust-alphas"></span>, on the series as they are and after the dummies. After the dummies, each
+          bandwidth is compared with its own simulated critical value. With more than one year of data, the tests on the
+          series as they are are also repeated on windows ending in the last year.</p>
+      </div>
+      <figure class="math"><figcaption>Long-run variance, bandwidth ℓ (Bartlett weights)</figcaption><img data-math="lrv" alt="long-run variance"></figure>
+      <figure class="math"><figcaption>Rejection at level α</figcaption><img data-math="decision" alt="decision rule"></figure>
+      <div class="card"><div class="card-head"><h3 class="card-title">Test decisions</h3>
+        <div class="filters filters-inline" id="robust-view" role="group" aria-label="Tests shown"></div></div>
+        <div id="stat-robust"></div></div>
+      <div class="summary" id="stat-robust-summary"></div>
+    </article>
+
+    <article class="block" id="tests-lags">
+      <h2>Lag selection</h2>
+      <div class="prose">
+        <p>The lag order p is the number of past hours in each equation. Leaving out lags, such as the same hour the day
+          before, biases the results; extra lags only cost precision. Information criteria weigh the fit against the
+          number of coefficients, and the order with the lowest value is chosen. AIC, HQ and BIC differ only in the
+          penalty.</p>
+      </div>
+      <figure class="math"><img data-math="ic" alt="information criterion"></figure>
+      <figure class="math"><img data-math="penalty" alt="penalties"></figure>
+      <div class="prose">
+        <p>All orders from 1 to 48 are scored on the same hours. The model uses the AIC order, because missing lags are
+          the worse mistake. BIC and HQ pick fewer lags here, but move towards AIC as the sample grows.</p>
+      </div>
+      <div class="filters filters-inline model-choice" role="group" aria-label="Model shown"></div>
+      <div class="legend-row" id="lag-legend"></div>
+      <div class="card chart-card"><div class="chart" id="lag-chart"></div></div>
+      <div class="card"><h3 class="card-title">Chosen lag orders</h3><div id="lag-table"></div></div>
+      <div class="summary" id="lag-summary"></div>
+    </article>
+
+    <article class="block" id="tests-residuals">
+      <h2>Residual checks</h2>
+      <div class="prose">
+        <p>If the model captures the regular patterns, the residual of one hour says nothing about the residuals of the
+          next hours. The LM test checks this for the first 24 lags. It rejects in every model, in its standard and in
+          its robust form.</p>
+      </div>
+      <div class="filters filters-inline model-choice" role="group" aria-label="Model shown"></div>
+      <div class="legend-row" id="acf-legend"></div>
+      <div class="card chart-card"><div class="chart" id="acf-chart"></div></div>
+      <p class="note">Dotted lines at one and two weeks.</p>
+
+      <h3 class="sub-h" id="tests-lm">The LM test</h3>
+      <ol class="fb-steps">
+        <li class="fb-step"><span class="step-tag">Step 1</span><div><b>Residuals</b>
+          <p>The estimated VARX leaves three residuals in every hour, û<sub>t</sub>: one for the wind error, one for the
+            demand error and one for the spread. They are the part of each variable that the model does not
+            explain.</p></div></li>
+        <li class="fb-step"><span class="step-tag">Step 2</span><div><b>Auxiliary regression</b>
+          <p>Each residual is regressed on everything the model already uses, z<sub>t</sub>, and on the three residuals
+            of each of the 24 previous hours. D<sub>j</sub> holds the 3 × 3 = 9 coefficients of the residuals j hours
+            earlier, so the test covers 24 × 9 = <span data-fact="df"></span> coefficients. Without a pattern they are
+            all zero.</p>
+          <figure class="math"><img data-math="lm" alt="LM test regression"></figure></div></li>
+        <li class="fb-step"><span class="step-tag">Step 3</span><div><b>Statistic</b>
+          <p>g<sub>t</sub> multiplies the residuals of this hour with the past residuals q<sub>t</sub>, after removing
+            what z<sub>t</sub> already explains of them. Without a pattern, positive and negative products cancel and
+            their sum stays close to zero. The statistic divides the squared sum by how much the products vary from
+            hour to hour. It works like a sum of <span data-fact="df"></span> squared t-values, one per coefficient:
+            each says how far a coefficient is from zero, measured in its own chance variation.</p>
+          <figure class="math"><img data-math="lm_robust" alt="robust LM statistic"></figure></div></li>
+        <li class="fb-step"><span class="step-tag">Step 4</span><div><b>Critical value</b>
+          <p>Without a pattern, each squared t-value behaves like the square of a standard normal number, so their sum
+            follows a χ² distribution with <span data-fact="df"></span> degrees of freedom. Its average is
+            <span data-fact="df"></span> and its standard deviation <span data-fact="sd"></span>. The 5 % critical
+            value, <span data-fact="crit"></span>, is the value that only 5 % of samples without any pattern exceed. It
+            lies <span data-fact="crit-sd"></span> standard deviations above the average. The p-value is the share of
+            such samples that exceed the statistic found.</p>
+          <figure class="math"><img data-math="lm_limit" alt="critical value and p-value"></figure></div></li>
+        <li class="fb-step"><span class="step-tag">Step 5</span><div><b>Decision</b>
+          <p>Above <span data-fact="crit"></span> the test rejects no autocorrelation. The robust statistic is
+            <span data-fact="robust"></span>, <span data-fact="robust-sd"></span> standard deviations above the
+            average, and p <span data-fact="robust-p"></span> in every model.</p></div></li>
+      </ol>
+      <div class="legend-row" id="lm-legend"></div>
+      <div class="card chart-card"><div class="chart chart-short" id="lm-chart"></div></div>
+
+      <h3 class="sub-h" id="tests-lm-forms">Standard and robust form</h3>
+      <div class="prose">
+        <p>The two forms differ only in how they measure the chance variation in step 3. The standard form takes it
+          from one residual variance for the whole year: it compares the residual covariance with and without the past
+          residuals, Σ̂<sub>v</sub> against Σ̂<sub>u</sub>. That is right only when every hour is equally
+          volatile.</p>
+      </div>
+      <figure class="math"><img data-math="lm_standard" alt="standard LM statistic"></figure>
+      <div class="prose">
+        <p>In 2025 calm and volatile weeks alternate. The ARCH-LM test finds a changing variance in
+          <span data-fact="arch"></span> equations, and the kurtosis is <span data-fact="kurtosis"></span>, against 3
+          for normal residuals (variance table below). In a volatile week the residuals of this hour and of the past
+          hours are large together, so their products are large in both directions. The standard form expects them to
+          be as small as in an average week, reads their size as a pattern and rejects too often, even when there is
+          none. The robust form measures the variation of the products hour by hour, so a volatile hour raises the
+          product and its expected variation together.</p>
+        <p>Here the standard statistic is <span data-fact="ratio"></span> times the robust one. Flipping the sign of
+          each hour's residuals at random keeps the volatility of the data but removes any pattern. Over 200 such
+          draws per model, the standard form still rejects in 80 to 96 % of them, the robust form in 5 to 10 %, close to
+          the 5 % it should. In these draws the robust statistic exceeds 251 to 264 in 5 % of cases, close to the χ²
+          critical value of 251. The robust form is used because its assumption fits the data. It rejects as
+          well.</p>
+      </div>
+
+      <h3 class="sub-h" id="tests-lm-why">Why the test rejects</h3>
+      <div class="prose">
+        <p>The test is very sensitive here. With <span data-fact="T"></span> hours and <span data-fact="df"></span>
+          coefficients, small patterns add up: the robust statistic is <span data-fact="per-df"></span> times its
+          average without a pattern.</p>
+        <p>The correlation chart above does not show the pattern, because the white-noise band,
+          <span data-fact="band"></span>, is not the right yardstick for the first 24 lags. The model's 25 lags already
+          absorb most of the correlation at these lags, so the residual correlations there sit closer to zero than
+          those of a series that was never fitted, and their chance range is narrower than the band. A correlation
+          inside the band, such as the largest within a day, <span data-fact="max-day"></span>, can still be
+          significant. The test accounts for this through z<sub>t</sub>.</p>
+        <p>Split up, most of the evidence sits at lag 1 and in the wind-error equation. Lag 1 alone already rejects in
+          every model. Tested equation by equation, the wind-error equation rejects in every model and the demand-error
+          equation more weakly. The spread equation passes in the four balancing models (ID-BAL and DA-BAL) and
+          rejects in the two DA-ID models. The lag-1 pattern of the wind error is strongest in the daytime hours, not
+          at the change of day. Taken quarter by quarter, the test still rejects in most cases, so the pattern runs
+          through the year and is not a single event.</p>
+        <p>More lags, up to 48, leave the statistic where it is, and the lags around one and two weeks lower it only a
+          little. The weekly pattern below does not enter this test, which covers 24 lags.</p>
+      </div>
+
+      <h3 class="sub-h" id="tests-lm-next">What it means for the results</h3>
+      <div class="prose">
+        <p>A pattern left in the residuals has two effects. The usual standard errors become too small, and since the
+          model contains lagged values of its own variables, the coefficients can be biased. The first is handled: the
+          Granger p-values and the response bands come from a bootstrap that keeps each two-week block of residuals
+          together, so any pattern shorter than two weeks stays in the draws. The second is not measured. The Granger
+          tests of the forecast errors on a spread sit in the spread equation, which shows no pattern in the balancing
+          models. The responses over time also use the forecast-error equations, where most of the pattern is.</p>
+      </div>
+      <div class="card"><h3 class="card-title">Options</h3>
+        <ul class="read-list">
+          <li>Keep the model and report the rejection, as now. The bootstrap already keeps the pattern in the Granger
+            p-values and the response bands.</li>
+          <li>Find the source of the lag-1 pattern in the wind-error equation, strongest in the daytime hours, and
+            change the model there.</li>
+          <li>Check whether the pattern is non-linear or comes from links that change over the year. The generalized
+            additive model and quantile regression of the next stage can show the first.</li>
+        </ul></div>
+
+      <h3 class="sub-h" id="tests-weekly">Weekly pattern</h3>
+      <div class="prose">
+        <p>The main pattern left is weekly and sits in the demand-error equation. The demand forecast misses the same
+          weekdays in the same direction for weeks at a time. Lags around one and two weeks remove it; hour-of-week
+          dummies only reduce it.</p>
+      </div>
+      <div class="filters filters-inline model-choice" role="group" aria-label="Model shown"></div>
+      <div class="legend-row" id="weekly-legend"></div>
+      <div class="card chart-card"><div class="chart chart-short" id="weekly-chart"></div></div>
+      <div class="grid-2">
+        <div class="card"><h3 class="card-title">Weekly correlation by quarter</h3><div id="quarter-table"></div></div>
+        <div class="card" id="tests-variance"><h3 class="card-title">Variance and kurtosis</h3><div id="variance-table"></div>
+          <p class="note">ARCH-LM p &lt; 0.05: the variance changes over time. Normal residuals have kurtosis 3.</p></div>
+      </div>
+
+      <h3 class="sub-h" id="tests-stability">Stability</h3>
+      <div class="prose">
+        <p>A shock has to die out. This holds when every eigenvalue of the companion matrix is below 1 in absolute
+          value.</p>
+      </div>
+      <figure class="math"><img data-math="stability" alt="stability condition"></figure>
+      <div class="tiles" id="stability-tiles"></div>
+
+      <h3 class="sub-h" id="tests-ramp">Lagged wind ramp</h3>
+      <div class="prose">
+        <p>The wind ramp r<sub>t</sub> and the wind forecast error e<sub>t</sub> both contain actual wind production
+          W<sub>t</sub>, so in the same hour they are tied by an identity. With r<sub>t</sub> in the model, the
+          wind-error equation just reproduced that identity, and its residuals kept a pattern no lag order removed. The
+          ramp therefore enters as r<sub>t−1</sub>, which is known when the hour starts.</p>
+      </div>
+      <figure class="math"><img data-math="ramp" alt="wind ramp identity"></figure>
+      <div class="summary" id="res-summary"></div>
+    </article>
+  </section>
+
+  <!-- VARX RESULTS -->
+  <section id="results" class="section" aria-labelledby="results-h" hidden>
+    <div class="intro">
+      <div class="part-label">Part 2 · VARX model</div>
+      <h1 id="results-h">VARX results</h1>
+      <p>Results of the six VARX models, one for each zone and spread. Each model contains the wind error, the demand
+        error and one spread.</p>
+    </div>
+    <nav class="subnav" aria-label="Results">
+      <a href="#results/expected">Expected signs</a>
+      <a href="#results/answer">Main results</a>
+      <a href="#results/irf">Responses over time</a>
+      <a href="#results/robustness">Robustness</a>
+      <a href="#results/detail">Details</a>
+    </nav>
+
+    <article class="block" id="results-expected">
+      <h2>Expected signs</h2>
+      <div class="prose">
+        <p>A forecast error is forecast minus actual. With less wind than forecast the system is short: intraday and
+          balancing prices rise, the balancing price most, so all three spreads should fall. With less demand than
+          forecast the system is long, and all three should rise.</p>
+      </div>
+      <div class="card"><div id="expect-table"></div></div>
+    </article>
+
+    <article class="block" id="results-answer">
+      <h2>Main results</h2>
+      <div class="grid-2">
+        <div class="card"><h3 class="card-title">Granger causality (p-values)</h3><div id="answer-granger"></div>
+          <div class="legend-row" id="answer-granger-legend"></div></div>
+        <div class="card"><div class="card-head"><h3 class="card-title">Response of the spread (EUR/MWh)</h3>
+          <div id="answer-hour"></div></div><div id="answer-irf"></div>
+          <div class="legend-row" id="answer-irf-legend"></div></div>
+      </div>
+      <div class="summary" id="answer-summary"></div>
+    </article>
+
+    <article class="block" id="results-irf">
+      <h2>Responses over time</h2>
+      <div class="filters filters-inline" id="compare-filters" role="group" aria-label="Shock"></div>
+      <div class="legend-row" id="compare-legend"></div>
+      <div class="model-grid" id="compare-grid"></div>
+    </article>
+
+    <article class="block" id="results-robustness">
+      <h2>Robustness</h2>
+      <div class="prose">
+        <p>Each model is estimated again with other lag structures: the BIC and HQ orders, the structure used in the
+          literature, and the chosen lags plus lags around one and two weeks (for the weekly pattern in the
+          demand-error residuals).</p>
+      </div>
+      <div class="card"><h3 class="card-title">Granger decisions that change</h3><div id="granger-changes"></div>
+        <p class="note">Bold: p &lt; 0.05.</p></div>
+      <div class="summary" id="robust-summary"></div>
+    </article>
+
+    <details class="block fold" id="results-detail">
+    <summary><h2>Details</h2></summary>
+    <article class="block" id="results-reading">
+      <h2>Reading the results</h2>
+      <div class="prose">
+        <p>Granger causality uses only the previous hours; the impulse response also includes the same hour.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card read-card">
+          <h3 class="read-title">Granger causality</h3>
+          <p class="read-q">Tests whether past forecast errors help predict the spread.</p>
+          <div class="read-visual" id="read-p"></div>
+          <ul class="read-list">
+            <li>Reported as a p-value between 0 and 1.</li>
+            <li>A small p-value shows that the link exists, not how large it is.</li>
+            <li>Without any link, about 1 test in 20 is below 0.05 by chance.</li>
+          </ul>
+        </div>
+        <div class="card read-card">
+          <h3 class="read-title">Impulse response</h3>
+          <p class="read-q">How much the spread moves after a forecast error of typical size.</p>
+          <div class="read-visual" id="read-irf"></div>
+          <ul class="read-list">
+            <li>In EUR/MWh, for an error of one standard deviation.</li>
+            <li>The sign gives the direction; 0 means no effect.</li>
+            <li>If the 95 % band includes 0, the effect is not significant.</li>
+          </ul>
+        </div>
+        <div class="card read-card">
+          <h3 class="read-title">R²</h3>
+          <p class="read-q">Share of the hourly variation that each equation explains.</p>
+          <div class="read-visual" id="read-r2"></div>
+          <ul class="read-list">
+            <li>From 0 (nothing) to 1 (everything).</li>
+            <li>One dot per equation and model.</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <article class="block" id="results-method">
+      <h2>Method</h2>
+      <h3 class="sub-h">Granger causality</h3>
+      <div class="prose">
+        <p>x Granger-causes y if the past of x improves the prediction of y beyond y's own past and the rest of the
+          model. In the VARX this is a test of whether all lags of x in the equation of y are zero. It is about
+          prediction, not proof of cause and effect, and it leaves out effects within the same hour. Those show up in
+          the impulse responses.</p>
+      </div>
+      <figure class="math"><img data-math="granger" alt="Granger causality restriction"></figure>
+      <div class="prose">
+        <p>The test uses a Wald statistic with a covariance that allows the residual variance to change. The χ² p-value
+          is not reliable here, so the p-value is bootstrapped. The model without the lags of x simulates new data, each
+          two-week block of residuals gets a random sign, and the statistic is recomputed a thousand times.</p>
+      </div>
+      <figure class="math"><img data-math="wald" alt="Wald statistic"></figure>
+      <figure class="math"><img data-math="bootstrap" alt="block wild bootstrap"></figure>
+      <h3 class="sub-h">Impulse responses</h3>
+      <div class="prose">
+        <p>An impulse response follows the effect of one shock on all variables over the next hours. A stable VARX can
+          be written as a sum of past residuals, so the effect h hours later comes straight from the coefficients.</p>
+      </div>
+      <figure class="math"><img data-math="ma" alt="moving-average form"></figure>
+      <div class="prose">
+        <p>The residuals are correlated within the hour, so they are first split into uncorrelated shocks with a
+          Cholesky factorisation. This needs an order: the first variable can move the others within the hour, the last
+          only itself. The order is wind error, demand error, spread, which assumes that prices cannot change the forecast
+          errors of the same hour. This holds for wind, apart from curtailment at negative prices, but less for demand,
+          since total load may include consumption that reacts to prices. The reference studies put the spread first, so
+          its response in the hour of the shock is zero; the green lines show that order.</p>
+      </div>
+      <figure class="math"><img data-math="cholesky" alt="Cholesky factorisation"></figure>
+      <p class="prose note">Forecast errors are forecast minus actual. A positive wind shock means less wind than
+        forecast (a short system); a positive demand shock means less demand than forecast (a long system). Each shock
+        is one standard deviation.</p>
+    </article>
+
+    <article class="block" id="results-models">
+      <h2>Model by model</h2>
+      <div class="prose">
+        <p>Granger map, main results and all impulse responses (with 95 % bootstrap bands) for the selected model.</p>
+      </div>
+      <div class="model-picker" id="model-picker" role="group" aria-label="Model"></div>
+      <p class="note">Spread responses on the cards are for the hour of the shock; grey means not significant.</p>
+      <div class="model-panel" id="model-panel"></div>
+    </article>
+
+    <article class="block" id="results-compare">
+      <h2>Comparing the models</h2>
+      <div class="prose">
+        <p>The six models side by side; colour marks the zone.</p>
+      </div>
+      <h3 class="sub-h">Granger maps</h3>
+      <div class="legend-row" id="map-legend"></div>
+      <div class="map-grid" id="granger-maps"></div>
+      <h3 class="sub-h">Spread response at a chosen hour</h3>
+      <div class="filters filters-inline" id="forest-filters" role="group" aria-label="Hour after the shock"></div>
+      <div class="legend-row" id="forest-legend"></div>
+      <div class="grid-3" id="forest"></div>
+      <div class="grid-2">
+        <div class="card"><h3 class="card-title">R² by equation</h3><div id="models-table"></div></div>
+        <div class="card"><h3 class="card-title">Same-hour residual correlation</h3><div id="corr-table"></div></div>
+      </div>
+      <div class="summary" id="compare-summary"></div>
+    </article>
+
+    <article class="block" id="results-tables">
+      <h2>Robustness tables</h2>
+      <div class="card"><h3 class="card-title">Lag structures</h3><div id="structures-table"></div></div>
+      <div class="filters filters-inline" id="granger-filters" role="group" aria-label="Lag structure"></div>
+      <div class="card"><h3 class="card-title">Granger p-values</h3><div id="granger-table"></div>
+        <div class="legend-row" id="granger-legend"></div></div>
+      <div class="card"><h3 class="card-title">Hours inside the chosen model's band</h3>
+        <div id="irf-robust-table"></div>
+        <p class="note">Grey: inside the band in every hour.</p></div>
+    </article>
+    </details>
+  </section>
+
+  <!-- PART 3: NEXT STEPS -->
+  <section id="questions" class="section" aria-labelledby="questions-h" hidden>
+    <div class="intro">
+      <div class="part-label">Part 3</div>
+      <h1 id="questions-h">Questions and next steps</h1>
+      <p>The open questions from the first estimation of the VARX. Each one also appears as a blue circle where it
+        applies.</p>
+    </div>
+    <article class="block" id="questions-open">
+      <h2>Open questions</h2>
+      <ol class="question-list" id="question-list"></ol>
+    </article>
+    <article class="block" id="questions-next">
+      <h2>Next stage</h2>
+      <div class="prose">
+        <p>The next stage studies the other two research questions: how other variables affect the spreads and their
+          volatility, and whether forecast errors affect the volatility of the spreads. It adds two methods. A
+          generalized additive model lets the effect of the forecast errors be nonlinear and asymmetric, and quantile
+          regression shows whether the errors affect extreme spreads differently from typical ones.</p>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer class="footer" id="footer"></footer>
+
+<script src="data/site.js"></script>
+<script src="assets/plotly.min.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

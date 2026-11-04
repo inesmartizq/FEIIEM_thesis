@@ -19,12 +19,12 @@ Structure:
 DATE PADDING NOTE: NORDPOOL_START_DATE/END_DATE are padded one calendar day
 on each side of the actual analysis window (2022-01-01 to 2025-12-31). This
 is because Nord Pool's "DeliveryStartUTC" column is actually Europe/
-Copenhagen wall-clock CET/CEST (mislabeled as UTC) — dataframe_building.py
+Copenhagen wall-clock CET/CEST (mislabeled as UTC) — dataframe/building.py
 converts it to true UTC. Without this padding, requesting exactly
 2022-01-01 to 2025-12-31 in CET-labeled terms would miss the true UTC hours
 at each end of the window (e.g. the true last UTC hour of 2025-12-31 is
 labeled "2026-01-01 00:00" in CET). The padding days are harmless surplus —
-dataframe_building.py's grid only keeps rows inside the true UTC analysis
+dataframe/building.py's grid only keeps rows inside the true UTC analysis
 window, so the extra day on each end is simply dropped during the merge.
 
 Usage:
@@ -375,7 +375,7 @@ ENERGINET_AFRR_START_DATE = date(2022, 1, 1)   # confirmed dataset start (metada
 # ~hourly) duplicate rows from each side for it. Ending here instead
 # gives the two sources a clean handoff with no shared day, so the
 # combined file has zero PICASSO-boundary duplicates instead of relying
-# on dataframe_building.py's keep="first" to silently drop half of them.
+# on dataframe/building.py's keep="first" to silently drop half of them.
 ENERGINET_AFRR_END_DATE = date(2024, 10, 1)
 ENERGINET_AFRR_AREAS = ["DK1", "DK2"]
 ENERGINET_AFRR_CACHE_DIR = PROJECT_ROOT / "data/raw/afrr/energinet_pre_picasso"

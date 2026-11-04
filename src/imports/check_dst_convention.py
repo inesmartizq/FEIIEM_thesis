@@ -11,7 +11,7 @@ day (last Sunday of October), the local 02:00-03:00 hour happens TWICE —
 a genuinely DST-aware file would have 25 rows that day.
 
 If instead you see 24 rows on BOTH days (no skip, no repeat), the source is
-using a flat, non-DST-varying offset, and the fix in dataframe_building.py
+using a flat, non-DST-varying offset, and the fix in dataframe/building.py
 needs to change from full Europe/Copenhagen tz-aware conversion to a simple
 fixed offset instead.
 

@@ -70,7 +70,7 @@ OUTPUT_CSV = PROCESSED_DIR / "da_forecasts_and_actual.csv"
 AREAS = ["DK1", "DK2"]
 # Padded one calendar day on each side of the analysis window (2022-01-01 to
 # 2025-12-31). Nord Pool requests are by CET delivery day while timestamps are
-# UTC (genuine UTC — see dataframe_building.py's TIMEZONE NOTE), so the first
+# UTC (genuine UTC — see dataframe/building.py's TIMEZONE NOTE), so the first
 # UTC hour of 2022-01-01 belongs to CET day 2022-01-01 but the last UTC hours of
 # 2025-12-31 run into CET day 2026-01-01. The surplus days are dropped when the
 # dataframe is built.

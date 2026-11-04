@@ -1,0 +1,7 @@
+zone,variables,p,BIC,HQ,AIC
+DK1,"c_wind_total_err, c_load_err, x_da_id_spread",25,2,3,25
+DK1,"c_wind_total_err, c_load_err, x_id_bal_spread",25,2,3,25
+DK1,"c_wind_total_err, c_load_err, x_da_bal_spread",25,2,3,25
+DK2,"c_wind_total_err, c_load_err, x_da_id_spread",25,2,2,25
+DK2,"c_wind_total_err, c_load_err, x_id_bal_spread",25,2,2,25
+DK2,"c_wind_total_err, c_load_err, x_da_bal_spread",25,2,2,25

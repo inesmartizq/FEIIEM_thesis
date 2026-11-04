@@ -28,7 +28,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]  # src/imports/<this file> ->
 # Padded 1 day on each side vs. the true 2022-2025 analysis window, same
 # reasoning as balancing_pipeline.py / import_da_forecasts_pipeline.py: the
 # raw "...UTC" columns here are actually CET-labeled (fixed downstream in
-# dataframe_building.py), so the true UTC boundary hours of the window fall
+# dataframe/building.py), so the true UTC boundary hours of the window fall
 # just outside a CET-labeled request range unless padded. Without this,
 # 2025-12-31's last 2 hours (UTC) were missing from the built dataframe
 # (confirmed: id_* columns' last_non_null stopped at 21:00 UTC instead of
@@ -40,9 +40,9 @@ CACHE_DIR = PROJECT_ROOT / "data/raw/intraday/intraday_stats"   # raw JSON, one 
 
 # NOTE: this used to have an extra "intraday_stats" folder segment
 # (data/processed/intraday/intraday_stats/...), which didn't match what
-# dataframe_building.py's SOURCES["intraday"]["path"] actually looks for
+# dataframe/building.py's SOURCES["intraday"]["path"] actually looks for
 # (data/processed/intraday/...) — so a completed run of this script would
-# silently produce a file dataframe_building.py could never find, logging
+# silently produce a file dataframe/building.py could never find, logging
 # "[intraday] SKIPPED — file not found" instead of an error. Fixed to match
 # the same one-folder-per-category convention every other source here uses
 # (da_forecasts/, day_ahead/, etc.).

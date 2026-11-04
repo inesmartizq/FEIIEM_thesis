@@ -1,0 +1,91 @@
+zone,system,response,shock,structure,hours_inside,hours
+DK1,x_da_id_spread,x_da_id_spread,c_wind_total_err,BIC order,48,49
+DK1,x_da_id_spread,x_da_id_spread,c_wind_total_err,HQ order,47,49
+DK1,x_da_id_spread,x_da_id_spread,c_wind_total_err,literature,49,49
+DK1,x_da_id_spread,x_da_id_spread,c_wind_total_err,weekly lags,49,49
+DK1,x_da_id_spread,x_da_id_spread,c_wind_total_err,spread first,49,49
+DK1,x_da_id_spread,x_da_id_spread,c_load_err,BIC order,49,49
+DK1,x_da_id_spread,x_da_id_spread,c_load_err,HQ order,49,49
+DK1,x_da_id_spread,x_da_id_spread,c_load_err,literature,49,49
+DK1,x_da_id_spread,x_da_id_spread,c_load_err,weekly lags,49,49
+DK1,x_da_id_spread,x_da_id_spread,c_load_err,spread first,49,49
+DK1,x_da_id_spread,x_da_id_spread,x_da_id_spread,BIC order,35,49
+DK1,x_da_id_spread,x_da_id_spread,x_da_id_spread,HQ order,36,49
+DK1,x_da_id_spread,x_da_id_spread,x_da_id_spread,literature,44,49
+DK1,x_da_id_spread,x_da_id_spread,x_da_id_spread,weekly lags,49,49
+DK1,x_da_id_spread,x_da_id_spread,x_da_id_spread,spread first,49,49
+DK1,x_id_bal_spread,x_id_bal_spread,c_wind_total_err,BIC order,48,49
+DK1,x_id_bal_spread,x_id_bal_spread,c_wind_total_err,HQ order,48,49
+DK1,x_id_bal_spread,x_id_bal_spread,c_wind_total_err,literature,48,49
+DK1,x_id_bal_spread,x_id_bal_spread,c_wind_total_err,weekly lags,49,49
+DK1,x_id_bal_spread,x_id_bal_spread,c_wind_total_err,spread first,48,49
+DK1,x_id_bal_spread,x_id_bal_spread,c_load_err,BIC order,49,49
+DK1,x_id_bal_spread,x_id_bal_spread,c_load_err,HQ order,48,49
+DK1,x_id_bal_spread,x_id_bal_spread,c_load_err,literature,48,49
+DK1,x_id_bal_spread,x_id_bal_spread,c_load_err,weekly lags,49,49
+DK1,x_id_bal_spread,x_id_bal_spread,c_load_err,spread first,48,49
+DK1,x_id_bal_spread,x_id_bal_spread,x_id_bal_spread,BIC order,47,49
+DK1,x_id_bal_spread,x_id_bal_spread,x_id_bal_spread,HQ order,47,49
+DK1,x_id_bal_spread,x_id_bal_spread,x_id_bal_spread,literature,49,49
+DK1,x_id_bal_spread,x_id_bal_spread,x_id_bal_spread,weekly lags,49,49
+DK1,x_id_bal_spread,x_id_bal_spread,x_id_bal_spread,spread first,49,49
+DK1,x_da_bal_spread,x_da_bal_spread,c_wind_total_err,BIC order,47,49
+DK1,x_da_bal_spread,x_da_bal_spread,c_wind_total_err,HQ order,48,49
+DK1,x_da_bal_spread,x_da_bal_spread,c_wind_total_err,literature,49,49
+DK1,x_da_bal_spread,x_da_bal_spread,c_wind_total_err,weekly lags,49,49
+DK1,x_da_bal_spread,x_da_bal_spread,c_wind_total_err,spread first,48,49
+DK1,x_da_bal_spread,x_da_bal_spread,c_load_err,BIC order,48,49
+DK1,x_da_bal_spread,x_da_bal_spread,c_load_err,HQ order,48,49
+DK1,x_da_bal_spread,x_da_bal_spread,c_load_err,literature,49,49
+DK1,x_da_bal_spread,x_da_bal_spread,c_load_err,weekly lags,49,49
+DK1,x_da_bal_spread,x_da_bal_spread,c_load_err,spread first,48,49
+DK1,x_da_bal_spread,x_da_bal_spread,x_da_bal_spread,BIC order,48,49
+DK1,x_da_bal_spread,x_da_bal_spread,x_da_bal_spread,HQ order,48,49
+DK1,x_da_bal_spread,x_da_bal_spread,x_da_bal_spread,literature,49,49
+DK1,x_da_bal_spread,x_da_bal_spread,x_da_bal_spread,weekly lags,49,49
+DK1,x_da_bal_spread,x_da_bal_spread,x_da_bal_spread,spread first,49,49
+DK2,x_da_id_spread,x_da_id_spread,c_wind_total_err,BIC order,45,49
+DK2,x_da_id_spread,x_da_id_spread,c_wind_total_err,HQ order,45,49
+DK2,x_da_id_spread,x_da_id_spread,c_wind_total_err,literature,48,49
+DK2,x_da_id_spread,x_da_id_spread,c_wind_total_err,weekly lags,49,49
+DK2,x_da_id_spread,x_da_id_spread,c_wind_total_err,spread first,47,49
+DK2,x_da_id_spread,x_da_id_spread,c_load_err,BIC order,48,49
+DK2,x_da_id_spread,x_da_id_spread,c_load_err,HQ order,48,49
+DK2,x_da_id_spread,x_da_id_spread,c_load_err,literature,49,49
+DK2,x_da_id_spread,x_da_id_spread,c_load_err,weekly lags,49,49
+DK2,x_da_id_spread,x_da_id_spread,c_load_err,spread first,47,49
+DK2,x_da_id_spread,x_da_id_spread,x_da_id_spread,BIC order,32,49
+DK2,x_da_id_spread,x_da_id_spread,x_da_id_spread,HQ order,32,49
+DK2,x_da_id_spread,x_da_id_spread,x_da_id_spread,literature,33,49
+DK2,x_da_id_spread,x_da_id_spread,x_da_id_spread,weekly lags,49,49
+DK2,x_da_id_spread,x_da_id_spread,x_da_id_spread,spread first,49,49
+DK2,x_id_bal_spread,x_id_bal_spread,c_wind_total_err,BIC order,44,49
+DK2,x_id_bal_spread,x_id_bal_spread,c_wind_total_err,HQ order,44,49
+DK2,x_id_bal_spread,x_id_bal_spread,c_wind_total_err,literature,48,49
+DK2,x_id_bal_spread,x_id_bal_spread,c_wind_total_err,weekly lags,49,49
+DK2,x_id_bal_spread,x_id_bal_spread,c_wind_total_err,spread first,48,49
+DK2,x_id_bal_spread,x_id_bal_spread,c_load_err,BIC order,48,49
+DK2,x_id_bal_spread,x_id_bal_spread,c_load_err,HQ order,48,49
+DK2,x_id_bal_spread,x_id_bal_spread,c_load_err,literature,49,49
+DK2,x_id_bal_spread,x_id_bal_spread,c_load_err,weekly lags,49,49
+DK2,x_id_bal_spread,x_id_bal_spread,c_load_err,spread first,47,49
+DK2,x_id_bal_spread,x_id_bal_spread,x_id_bal_spread,BIC order,45,49
+DK2,x_id_bal_spread,x_id_bal_spread,x_id_bal_spread,HQ order,45,49
+DK2,x_id_bal_spread,x_id_bal_spread,x_id_bal_spread,literature,48,49
+DK2,x_id_bal_spread,x_id_bal_spread,x_id_bal_spread,weekly lags,49,49
+DK2,x_id_bal_spread,x_id_bal_spread,x_id_bal_spread,spread first,49,49
+DK2,x_da_bal_spread,x_da_bal_spread,c_wind_total_err,BIC order,43,49
+DK2,x_da_bal_spread,x_da_bal_spread,c_wind_total_err,HQ order,43,49
+DK2,x_da_bal_spread,x_da_bal_spread,c_wind_total_err,literature,49,49
+DK2,x_da_bal_spread,x_da_bal_spread,c_wind_total_err,weekly lags,49,49
+DK2,x_da_bal_spread,x_da_bal_spread,c_wind_total_err,spread first,48,49
+DK2,x_da_bal_spread,x_da_bal_spread,c_load_err,BIC order,48,49
+DK2,x_da_bal_spread,x_da_bal_spread,c_load_err,HQ order,48,49
+DK2,x_da_bal_spread,x_da_bal_spread,c_load_err,literature,48,49
+DK2,x_da_bal_spread,x_da_bal_spread,c_load_err,weekly lags,49,49
+DK2,x_da_bal_spread,x_da_bal_spread,c_load_err,spread first,48,49
+DK2,x_da_bal_spread,x_da_bal_spread,x_da_bal_spread,BIC order,47,49
+DK2,x_da_bal_spread,x_da_bal_spread,x_da_bal_spread,HQ order,47,49
+DK2,x_da_bal_spread,x_da_bal_spread,x_da_bal_spread,literature,48,49
+DK2,x_da_bal_spread,x_da_bal_spread,x_da_bal_spread,weekly lags,49,49
+DK2,x_da_bal_spread,x_da_bal_spread,x_da_bal_spread,spread first,49,49

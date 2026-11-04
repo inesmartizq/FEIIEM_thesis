@@ -1,8 +1,14 @@
-entsoe-py
 pandas
 numpy
+scipy
+statsmodels
+arch
+matplotlib
+plotly
+openpyxl
+requests
+entsoe-py
 pyarrow
 python-dotenv
-matplotlib
 seaborn
 jupyter

@@ -1,0 +1,7 @@
+zone,system,p,T,regressors
+DK1,x_da_id_spread,25,8404,119
+DK1,x_id_bal_spread,25,8404,119
+DK1,x_da_bal_spread,25,8404,119
+DK2,x_da_id_spread,25,8404,117
+DK2,x_id_bal_spread,25,8404,117
+DK2,x_da_bal_spread,25,8404,117

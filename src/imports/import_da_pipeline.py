@@ -15,9 +15,9 @@ a reference comment.
 TIMEZONE NOTE: like the other Nord Pool sources in this project, the raw
 "...UTC" fields here ("DeliveryStartUTC", "HourUTC") are actually
 Europe/Copenhagen wall-clock time (CET) with a bogus "+00:00" appended, not
-real UTC — confirmed via dataframe_building.py's SOURCES config
+real UTC — confirmed via dataframe/building.py's SOURCES config
 (nordpool_cet_fix=True for all three of these) and cross-checked against a
-real file header. The fix is applied downstream in dataframe_building.py,
+real file header. The fix is applied downstream in dataframe/building.py,
 not here — this script's job is just to get the raw CET-labeled values into
 clean hourly CSVs.
 
@@ -30,7 +30,7 @@ CET-labeled date 2026-01-01). Confirmed this was biting: with the
 un-padded range, da_price/da_flow_*/da_buy_volume_mw/da_sell_volume_mw all
 had last_non_null stuck at 2025-12-31 21:00:00+00:00 in the built
 dataframe, a full 2 hours short of 23:00. The padding days are harmless
-surplus — dataframe_building.py's grid only keeps rows inside the true UTC
+surplus — dataframe/building.py's grid only keeps rows inside the true UTC
 analysis window, so the extra day on each end is simply dropped at merge.
 
 That 2-hour (not 1-hour) shortfall was one hour more than a missing
@@ -615,7 +615,7 @@ def _save_raw_hourly(all_rows: list[dict], start_col: str, end_col: str, value_c
 
 def feature_overview():
     """Per-file, per-column coverage report (pct missing, first/last
-    non-null), mirroring dataframe_building.py's own coverage_report() —
+    non-null), mirroring dataframe/building.py's own coverage_report() —
     so the neighbor-missingness pattern (and everything else) is visible
     right from this pipeline's own output, before the full merge."""
     print(f"\n{'=' * 70}")
